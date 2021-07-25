@@ -1,0 +1,21 @@
+{
+  "name": "local-dynamic-grid",
+  "license": "GPL-2.0-or-later",
+  "author": {
+    "name": "Oliver Hader",
+    "email": "oliver.hader@typo3.org"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@rollup/plugin-replace": "^3.0.0",
+    "eslint": "^7.31.0",
+    "lit": "^2.0.0-rc.2",
+    "lit-analyzer": "^1.2.1",
+    "lit-html": "^2.0.0-rc.3",
+    "typescript": "^4.0"
+  }
+}

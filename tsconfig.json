@@ -1,0 +1,43 @@
+{
+    "compilerOptions": {
+        "target": "es2017",
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "scripthost",
+            "es2017",
+            "es2018",
+            "es2019"
+        ],
+        "esModuleInterop": true,
+        "module": "amd",
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "removeComments": false,
+        "alwaysStrict": true,
+        "downlevelIteration": true,
+        "experimentalDecorators": true,
+        "noImplicitAny": true,
+        "noImplicitThis": true,
+        "noImplicitReturns": true,
+        "pretty": true,
+        "baseUrl": "./",
+        "outDir": "Resources/Public/JavaScript/",
+        "paths": {
+            "TYPO3/CMS/DynamicGrid/*": [
+                "Resource/Private/TypeScript/*"
+            ],
+        },
+        "plugins": [
+            {
+                "name": "ts-lit-plugin",
+                "strict": true
+            }
+        ],
+        "typeRoots": [
+            "node_modules/@types",
+            "types"
+        ]
+    },
+    "include": ["Resources/Private/TypeScript/**/*.ts"]
+}

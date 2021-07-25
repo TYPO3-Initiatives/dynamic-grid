@@ -1,0 +1,50 @@
+<f:comment>
+    @todo This partial needs to be refactored in core first - it's simply doing too much and is not tailored for components
+</f:comment>
+
+<td valign="top" colspan="{column.colSpan}" rowspan="{column.rowSpan}"
+    data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
+    class="t3js-page-lang-column-{column.context.siteLanguage.languageId} t3js-page-column t3-grid-cell t3-page-column t3-page-column-{column.columnNumber}
+        {f:if(condition: column.active, else: 't3-grid-cell-unassigned')}
+        t3-gridCell-width{column.colSpan}
+        t3-gridCell-height{column.rowSpan}">
+    <f:render partial="PageLayout/Grid/ColumnHeader" arguments="{_all}" />
+    <f:if condition="{column.unassigned}">
+        <div class="t3-page-ce">
+            <div class="t3-page-ce-header">Empty Colpos</div>
+            <div class="t3-page-ce-body">
+                <div class="t3-page-ce-body-inner">
+                    <div class="row">
+                        <div class="col-12">
+                            This column has no "colPos". This is only for display Purposes.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </f:if>
+    <f:comment>
+        @todo requires possibility to retrieve(!) custom properties from backend layouts
+        @see https://forge.typo3.org/issues/94634
+    </f:comment>
+    <f:if condition="{column.definition.dynamicGrid}">
+        <f:then>
+            <div data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
+                 class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
+                 {f:if(condition: column.items, else: 't3-page-ce-empty')}">
+                <typo3-backend-grid-container>
+                </typo3-backend-grid-container>
+            </div>
+        </f:then>
+        <f:comment>not really sure, why this check for `items` was introduced before</f:comment>
+        <f:else if="{column.items}">
+            <div data-colpos="{column.columnNumber}" data-language-uid="{column.context.siteLanguage.languageId}"
+                 class="t3js-sortable t3js-sortable-lang t3js-sortable-lang-{column.context.siteLanguage.languageId} t3-page-ce-wrapper
+                {f:if(condition: column.items, else: 't3-page-ce-empty')}">
+                <f:for each="{column.items}" as="item">
+                    <f:render partial="PageLayout/Record" arguments="{_all}" />
+                </f:for>
+            </div>
+        </f:else>
+    </f:if>
+</td>
