@@ -1,5 +1,9 @@
 # :warning: EXPERIMENTAL :warning:
 
+* current state does NOT provide any useful functionality
+* this extension currently just kick starts the basic structures and models
+* more functionality to be added step by step
+
 ## Dynamic Grids
 
 ## Assumptions & Principles
