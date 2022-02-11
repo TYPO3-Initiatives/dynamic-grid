@@ -55,7 +55,7 @@ class GridColumnItem extends \TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColu
                 'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
                 'colPos' => $this->column->getColumnNumber(),
                 'uid_pid' => -$this->record['uid'],
-		'left' => 1,
+                'left' => 1,
                 'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
             ];
             $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
@@ -74,7 +74,7 @@ class GridColumnItem extends \TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColu
 
         return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
     }
-    
+
     public function getNewContentAfterUrlRight(): string
     {
         $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
