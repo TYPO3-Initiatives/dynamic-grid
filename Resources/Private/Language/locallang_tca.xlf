@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<xliff version="1.0">
+	<file source-language="en" datatype="plaintext" original="messages" date="2021-12-27T20:22:32Z" product-name="dynamic-grid">
+		<header/>
+		<body>
+			<trans-unit id="pages.tx_dynamicgrid_grid" xml:space="preserve">
+				<source>Dynamic grid</source>
+			</trans-unit>
+			<trans-unit id="pages.tabs.tx_dynamicgrid_grid" xml:space="preserve">
+				<source>Dynamic grid</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

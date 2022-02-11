@@ -4,6 +4,7 @@
   "type": "typo3-cms-extension",
   "description": "Dynamic Grid in TYPO3 backend wireframe view",
   "homepage": "https://typo3.org/",
+  "version": "1.0.1",
   "license": ["GPL-2.0-or-later"],
   "keywords": ["TYPO3", "backend", "grid"],
   "authors": [
@@ -18,7 +19,7 @@
     "issues": "https://github.com/FriendsOfTYPO3/dynamic-grid"
   },
   "require": {
-    "typo3/cms-core": "^11.3@dev"
+    "typo3/cms-core": "^11.5"
   },
   "autoload": {
     "psr-4": {

@@ -19,6 +19,7 @@ class AssetWrapper implements MiddlewareInterface
         if ($route instanceof Route && $route->getPath() === '/module/web/layout') {
             $pageRenderer = GeneralUtility::makeInstance(PageRenderer::class);
             $pageRenderer->loadRequireJsModule('TYPO3/CMS/DynamicGrid/GridContainerElement');
+            $pageRenderer->loadRequireJsModule('TYPO3/CMS/DynamicGrid/jquery-ui');
         }
         return $handler->handle($request);
     }

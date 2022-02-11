@@ -27,57 +27,103 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
      * <fof-typo3-dynamic-grid-container></fof-typo3-dynamic-grid-container>
      */
     let GridContainerElement = class GridContainerElement extends lit_1.LitElement {
+
+	static properties = {
+            colPos: { attribute: 'colpos' },
+            rows: { attribute: 'rows' },
+        };
+	
         constructor() {
             super(...arguments);
-            this.rows = [];
             this.maxFractions = 12;
             this.index = 1;
-        }
+	}
+	
         render() {
+
             return lit_1.html `
-      ${this.rows.map((row) => lit_1.html `
-        <div class="grid-row" style="${this.styleRow(row)}">
-          ${row.items.map((item, itemIndex) => lit_1.html `
-            <div class="grid-item" style="${this.styleItem(item)}">
-              ${itemIndex !== 0 ? '' : lit_1.html `
-                  <button class="left add" @click="${() => this.prependItem(row)}">+</button>
-              `}
-              <div>${item.id}</div>
-              <button class="right add" @click="${() => this.appendItemAfter(row, item)}">+</button>
-            </div>
-          `)}
-        </div>
-      `)}
-      <div class="bottom">
-        <button class="add" @click="${this.appendRow}">+</button>
-      </div>
-      <div class="outer">
-        <div class="body">
-          <slot></slot>
-        </div>
-      </div>
-    `;
+	
+	        ${this.rows.map((row) => lit_1.html `
+	            ${row.colPos.map((colPos, colPosIndex) => lit_1.html `
+	                ${colPos.identifier != this.colPos ? '' : lit_1.html `
+                            ${colPos.containers.map((container, containerIndex) => lit_1.html `
+	                        <div class="grid-row" style="${this.styleRow(row)}">
+                                ${container.items.map((item, itemIndex) =>  lit_1.html `
+                                    <div class="grid-item" style="${this.styleItem(item)}">
+		                    ${item.entities.map(function(entity, entityIndex) {
+				        entity.inner = document.querySelector('#element-tt_content-' + entity.identifier);
+			                return lit_1.html `
+			                    ${entity.inner}
+				    `})}
+                                    </div>
+		                `)}
+		                </div>
+                            `)}
+		        `}
+	            `)}
+	        `)}
+      
+		<style>
+		    .t3-page-ce {
+			margin: 20px 10px;
+		    }
+		    .grid-row {
+		        margin: 0;
+		        padding: 0;
+		        display: grid;
+		        grid-template-columns: repeat(auto-fit, minmax(0px,1fr));
+		        position:relative;
+		    }
+		    .grid-item {
+		        position: relative;
+		        padding: 0;
+		        margin: 0;
+		        display: grid;
+			align-content: baseline;
+		    }
+		    .btn-newrow,
+		    .btn-newcol,
+		    .grid-row .grid-item:only-child .btn-newitem,
+		    .btn-nextcol,
+		    .btn-nextcol-nextrow {
+		        display: none;
+		    }
+		    .grid-row .grid-item:only-child .btn-newrow,
+                    .grid-row .grid-item:last-child > div:last-child .btn-newrow,
+                    .grid-row .grid-item > div:last-child .btn-newcol {
+		        display: block;
+			position: absolute;
+		    }
+		    .btn-newitem {
+			position: absolute;
+			left: 50%;
+			transform:translateX(-50%);
+			bottom: 0;
+		    }
+		    .btn-newcol {
+			right:-16px;
+			top: 50%;
+			transform: translateY(-50%);
+		    }
+		</style>
+            `;
         }
-        appendRow() {
-            this.rows = [].concat(this.rows, [{ items: [this.createGridItem()] }]);
-        }
-        prependItem(row) {
-            row.items = [].concat([this.createGridItem()], row.items);
-            this.rows = [].concat(this.rows);
-        }
-        appendItemAfter(row, after) {
-            const afterIndex = row.items.indexOf(after);
-            row.items.splice(afterIndex + 1, 0, this.createGridItem());
-            this.rows = [].concat(this.rows);
-        }
+	
+        createRenderRoot() {
+        /**
+           * Render template without shadow DOM. Note that shadow DOM features like
+           * encapsulated CSS and slots are unavailable.
+           */
+	    return this;
+
+	}
+	
+	
         styleRow(row) {
-            return style_map_1.styleMap({ 'grid-template-areas': '"' + row.items.map((item) => item.id).join(' ') + '"' });
+            return style_map_1.styleMap({ 'grid-template-areas': '"' + row.colPos.map((item) => item.id).join(' ') + '"' });
         }
         styleItem(item) {
             return style_map_1.styleMap({ 'grid-area': '"' + item.id + '"' });
-        }
-        createGridItem() {
-            return { id: 'x' + this.index++, fraction: 1, entities: [] };
         }
     };
     GridContainerElement.styles = [
