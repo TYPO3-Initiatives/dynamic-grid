@@ -17,15 +17,9 @@ declare(strict_types=1);
 
 namespace FriendsOfTYPO3\DynamicGrid\Xclass;
 
-use TYPO3\CMS\Backend\Preview\StandardPreviewRendererResolver;
+use TYPO3\CMS\Backend\Routing\Exception\RouteNotFoundException;
 use TYPO3\CMS\Backend\Routing\UriBuilder;
 use TYPO3\CMS\Backend\Utility\BackendUtility;
-use TYPO3\CMS\Backend\View\PageLayoutContext;
-use TYPO3\CMS\Backend\View\PageLayoutView;
-use TYPO3\CMS\Backend\View\PageLayoutViewDrawItemHookInterface;
-use TYPO3\CMS\Core\Imaging\Icon;
-use TYPO3\CMS\Core\Site\Entity\SiteLanguage;
-use TYPO3\CMS\Core\Type\Bitmask\Permission;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
@@ -40,9 +34,53 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  *
  * @internal this is experimental and subject to change in TYPO3 v10 / v11
  */
+
+/**
+ * TODO: Handle URL generation for following cases:
+ *
+ * - Add CE after existing CE in the same column
+ * - Add CE in a new column to the left/right of an existing CE
+ * - Add CE in a new row
+ */
 class GridColumnItem extends \TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColumnItem
 {
+    /**
+     * Generate URL for new item in current grid column
+     *
+     * TODO: Generalize this method and pass grid placement option for new CE as parameter
+     *
+     * @throws RouteNotFoundException
+     */
+    public function getNewContentAfterUrlNewItem(): string
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $pageId = $this->context->getPageId();
 
+        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
+            $urlParameters = [
+                'id' => $pageId,
+                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+                'colPos' => $this->column->getColumnNumber(),
+                'uid_pid' => -$this->record['uid'],
+                'gridPlacement' => 'newItem',
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            ];
+            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
+                ?? 'new_content_element_wizard';
+        } else {
+            $urlParameters = [
+                'edit' => [
+                    'tt_content' => [
+                        -$this->record['uid'] => 'new',
+                    ],
+                ],
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            ];
+            $routeName = 'record_edit';
+        }
+
+        return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+    }
 
     public function getNewContentAfterUrlLeft(): string
     {
