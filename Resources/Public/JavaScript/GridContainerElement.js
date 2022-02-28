@@ -44,12 +44,11 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
             return lit_1.html `
 	
 	        ${this.rows.map((row) => lit_1.html `
-	            ${row.colPos.map((colPos, colPosIndex) => lit_1.html `
-	                ${colPos.identifier != this.colPos ? '' : lit_1.html `
-                            ${colPos.containers.map((container, containerIndex) => lit_1.html `
-	                        <div class="grid-row" style="${this.styleRow(row)}">
+	                ${row.colPos != this.colPos ? '' : lit_1.html `
+                            ${row.containers.map((container, containerIndex) => lit_1.html `
+	                        <div class="grid-row" id="grid-row-${containerIndex}">
                                 ${container.items.map((item, itemIndex) =>  lit_1.html `
-                                    <div class="grid-item" style="${this.styleItem(item)}">
+                                    <div class="grid-item" id="grid-item-${containerIndex}-${itemIndex}">
 		                    ${item.entities.map(function(entity, entityIndex) {
 				        entity.inner = document.querySelector('#element-tt_content-' + entity.identifier);
 			                return lit_1.html `
@@ -60,12 +59,13 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		                </div>
                             `)}
 		        `}
-	            `)}
 	        `)}
+		
       
 		<style>
 		    .t3-page-ce {
 			margin: 20px 10px;
+			transform:scale(1) !important;
 		    }
 		    .grid-row {
 		        margin: 0;
@@ -80,6 +80,7 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		        margin: 0;
 		        display: grid;
 			align-content: baseline;
+			border:1px solid red;
 		    }
 		    .btn-newrow,
 		    .btn-newcol,
@@ -94,20 +95,41 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		        display: block;
 			position: absolute;
 		    }
-		    .btn-newitem {
-			position: absolute;
-			left: 50%;
-			transform:translateX(-50%);
-			bottom: 0;
+		    .t3-page-ce {
+  		        position: static !important;
 		    }
-		    .btn-newcol {
-			right:-16px;
-			top: 50%;
-			transform: translateY(-50%);
+		    .btn-newitem {
+			transform:translate(50%, -24px);
+			margin-left:-24px;
 		    }
 		</style>
             `;
         }
+	
+	updated() {
+		
+		$('.grid-row .grid-item > div:last-child .btn-newcol' ).each(function(i,e)
+		{
+		  $(e).position({
+		    my: "center center",
+		    at: "right center",
+		    of: '#' + $(e).parent().parent().attr('id'),
+		    collision: "none none"
+		   });
+		});
+		
+		$('.grid-row .grid-item:last-child > div:last-child .btn-newrow' ).each(function(i,e)
+		{
+		  console.log($(e).parent().parent().parent().attr('id'));
+		  $(e).position({
+		    my: "left bottom",
+		    at: "left+10 bottom",
+		    of: '#' + $(e).parent().parent().parent().attr('id'),
+		    collision: "flipfit none"
+		   });
+		});
+		
+	}
 	
         createRenderRoot() {
         /**
@@ -182,4 +204,5 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
         decorators_1.customElement('fof-typo3-dynamic-grid-container')
     ], GridContainerElement);
     exports.GridContainerElement = GridContainerElement;
+	
 });
