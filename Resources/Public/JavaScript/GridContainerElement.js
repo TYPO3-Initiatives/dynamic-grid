@@ -107,27 +107,29 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
         }
 	
 	updated() {
-		
-		$('.grid-row .grid-item > div:last-child .btn-newcol' ).each(function(i,e)
-		{
-		  $(e).position({
-		    my: "center center",
-		    at: "right center",
-		    of: '#' + $(e).parent().parent().attr('id'),
-		    collision: "none none"
-		   });
-		});
-		
-		$('.grid-row .grid-item:last-child > div:last-child .btn-newrow' ).each(function(i,e)
-		{
-		  console.log($(e).parent().parent().parent().attr('id'));
-		  $(e).position({
-		    my: "left bottom",
-		    at: "left+10 bottom",
-		    of: '#' + $(e).parent().parent().parent().attr('id'),
-		    collision: "flipfit none"
-		   });
-		});
+		$(window).on("resize click", function () {
+			$('.grid-row .grid-item > div:last-child .btn-newcol' ).each(function(i,e)
+			{
+			  $(e).position({
+			    my: "center center",
+			    at: "right center",
+			    of: '#' + $(e).parent().parent().attr('id'),
+			    collision: "none none"
+			   });
+			});
+			
+			$('.grid-row .grid-item:last-child > div:last-child .btn-newrow' ).each(function(i,e)
+			{
+			  console.log($(e).parent().parent().parent().attr('id'));
+			  $(e).position({
+			    my: "left bottom",
+			    at: "left+10 bottom",
+			    of: '#' + $(e).parent().parent().parent().attr('id'),
+			    collision: "flipfit none"
+			   });
+			});
+		// Invoke the resize event immediately on load
+		}).resize();
 		
 	}
 	
@@ -152,45 +154,6 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
         lit_1.css `
       :host {
         display: block;
-      }
-      .outer {
-        border: 0.5em solid transparent;
-      }
-      .outer:hover {
-        border: 0.5em solid grey;
-      }
-      .bottom {
-        text-align: center;
-      }
-      button.add {
-        background: orange;
-      }
-      button.add.left {
-        position: absolute;
-        top: 50%;
-        left: -1em;
-      }
-      button.add.right {
-        position: absolute;
-        top: 50%;
-        right: -1em;
-      }
-
-      .grid-row {
-        border: 1px dotted grey;
-        margin: 0 1em 1em 1em;
-        padding: 1em;
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(0px,1fr));
-        position:relative;
-      }
-
-      .grid-item {
-        position: relative;
-        border: 1px dotted grey;
-        padding: 0.5em;
-        margin: 0.5em;
-        display: grid;
       }
     `
     ];
