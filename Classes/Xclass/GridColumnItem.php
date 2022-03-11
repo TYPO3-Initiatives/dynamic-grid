@@ -28,7 +28,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  * Model/proxy around a single record which appears in a grid column
  * in the page layout. Returns titles, urls etc. and performs basic
  * assertions on the contained content element record such as
- * is-versioned, is-editable, is-delible and so on.
+ * is-versioned, is-editable, is-deletable and so on.
  *
  * Accessed from Fluid templates.
  *
@@ -36,7 +36,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
  */
 
 /**
- * TODO: Handle URL generation for following cases:
+ * Generate URL for a new content element for following cases:
  *
  * - Add CE after existing CE in the same column
  * - Add CE in a new column to the left/right of an existing CE
@@ -47,99 +47,87 @@ class GridColumnItem extends \TYPO3\CMS\Backend\View\BackendLayout\Grid\GridColu
     /**
      * Generate URL for new item in current grid column
      *
-     * TODO: Generalize this method and pass grid placement option for new CE as parameter
+     * @param string $gridPlacement Can be one of the following: newRow, newItemBelow, newItemAbove, newColumnLeft, newColumnRight
+     * @throws RouteNotFoundException
+     */
+    protected function generateNewContentUrlWithGridPlacement(string $gridPlacement): string
+    {
+        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
+        $pageId = $this->context->getPageId();
+
+        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
+            $urlParameters = [
+                'id' => $pageId,
+                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
+                'colPos' => $this->column->getColumnNumber(),
+                'uid_pid' => -$this->record['uid'],
+                'gridPlacement' => $gridPlacement,
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            ];
+            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
+                ?? 'new_content_element_wizard';
+        } else {
+            $urlParameters = [
+                'edit' => [
+                    'tt_content' => [
+                        -$this->record['uid'] => 'new',
+                    ],
+                ],
+                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
+            ];
+            $routeName = 'record_edit';
+        }
+
+        return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+    }
+
+    /**
+     * Generate URL to place the new content in a new row
      *
      * @throws RouteNotFoundException
      */
-    public function getNewContentAfterUrlNewItem(): string
+    public function getNewContentUrlAsNewRow(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $pageId = $this->context->getPageId();
-
-        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
-            $urlParameters = [
-                'id' => $pageId,
-                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-                'colPos' => $this->column->getColumnNumber(),
-                'uid_pid' => -$this->record['uid'],
-                'gridPlacement' => 'newItem',
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
-                ?? 'new_content_element_wizard';
-        } else {
-            $urlParameters = [
-                'edit' => [
-                    'tt_content' => [
-                        -$this->record['uid'] => 'new',
-                    ],
-                ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = 'record_edit';
-        }
-
-        return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+        return $this->generateNewContentUrlWithGridPlacement('newRow');
     }
 
-    public function getNewContentAfterUrlLeft(): string
+    /**
+     * Generate URL to place the new content as first item of a column
+     *
+     * @throws RouteNotFoundException
+     */
+    public function getNewContentUrlAsNewItemAbove(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $pageId = $this->context->getPageId();
-
-        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
-            $urlParameters = [
-                'id' => $pageId,
-                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-                'colPos' => $this->column->getColumnNumber(),
-                'uid_pid' => -$this->record['uid'],
-                'left' => 1,
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
-                ?? 'new_content_element_wizard';
-        } else {
-            $urlParameters = [
-                'edit' => [
-                    'tt_content' => [
-                        -$this->record['uid'] => 'new',
-                    ],
-                ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = 'record_edit';
-        }
-
-        return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+        return $this->generateNewContentUrlWithGridPlacement('newItemAbove');
     }
 
-    public function getNewContentAfterUrlRight(): string
+    /**
+     * Generate URL to place the new content inside en existing column
+     *
+     * @throws RouteNotFoundException
+     */
+    public function getNewContentUrlAsNewItemBelow(): string
     {
-        $uriBuilder = GeneralUtility::makeInstance(UriBuilder::class);
-        $pageId = $this->context->getPageId();
+        return $this->generateNewContentUrlWithGridPlacement('newItemBelow');
+    }
 
-        if ($this->context->getDrawingConfiguration()->getShowNewContentWizard()) {
-            $urlParameters = [
-                'id' => $pageId,
-                'sys_language_uid' => $this->context->getSiteLanguage()->getLanguageId(),
-                'colPos' => $this->column->getColumnNumber(),
-                'uid_pid' => -$this->record['uid'],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = BackendUtility::getPagesTSconfig($pageId)['mod.']['newContentElementWizard.']['override']
-                ?? 'new_content_element_wizard';
-        } else {
-            $urlParameters = [
-                'edit' => [
-                    'tt_content' => [
-                        -$this->record['uid'] => 'new',
-                    ],
-                ],
-                'returnUrl' => $GLOBALS['TYPO3_REQUEST']->getAttribute('normalizedParams')->getRequestUri(),
-            ];
-            $routeName = 'record_edit';
-        }
+    /**
+     * Generate URL to place the new content in a new column as the first column of a row
+     *
+     * @throws RouteNotFoundException
+     */
+    public function getNewContentUrlAsNewColumnLeft(): string
+    {
+        return $this->generateNewContentUrlWithGridPlacement('newColumnLeft');
+    }
 
-        return (string)$uriBuilder->buildUriFromRoute($routeName, $urlParameters);
+    /**
+     * Generate URL to place the new content in a new column next to an existing column
+     *
+     * @throws RouteNotFoundException
+     */
+    public function getNewContentUrlAsNewColumnRight(): string
+    {
+        return $this->generateNewContentUrlWithGridPlacement('newColumnRight');
     }
 }

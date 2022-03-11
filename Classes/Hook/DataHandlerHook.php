@@ -45,10 +45,10 @@ class DataHandlerHook
 
         // Get dynamic grid configuration
         $page = $connection->select(
-                ['tx_dynamicgrid_grid'], // fields to select
-                'pages', // from
-                [ 'uid' => $pageUid] // where
-            )
+            ['tx_dynamicgrid_grid'], // fields to select
+            'pages', // from
+            [ 'uid' => $pageUid] // where
+        )
             ->fetchAssociative();
 
         if (!empty($page['tx_dynamicgrid_grid'])) {
@@ -59,7 +59,7 @@ class DataHandlerHook
                     switch ($gridPlacement) {
                         case 'newRow':
                             break;
-                        case 'newItem':
+                        case 'newItemBelow':
                             // Find row
                             foreach ($columnConfig['containers'] as $containerKey => $container) {
                                 // Find column
@@ -83,6 +83,8 @@ class DataHandlerHook
                                     }
                                 }
                             }
+                            break;
+                        case 'newItemAbove':
                             break;
                         case 'newColumnLeft':
                             break;
