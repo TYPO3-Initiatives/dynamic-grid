@@ -16,9 +16,6 @@
         </div>
     </div>
     <f:if condition="{allowEditContent} && {item.column.contentEditable} && {column.context.allowNewContent} && {column.active}">
-        
-            <f:if condition="{item.column.context.drawingConfiguration.showNewContentWizard}">
-                <f:then>
 		<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-newrow" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
                     <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
                         <button type="button" class="btn btn-default btn-sm">
@@ -28,80 +25,40 @@
                     </typo3-backend-new-content-element-wizard-button>
 		</div>
 		<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-		 <f:if condition="{column.definition.dynamicGrid}">
-                        <f:then>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-newcol" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlLeft}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
-				<button type="button" class="btn btn-default btn-sm">
-					<core:icon identifier="actions-add" />
-				</button>
-			    </typo3-backend-new-content-element-wizard-button>
-			    </div>
-		              <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-newitem" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlNewItem}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
-				<button type="button" class="btn btn-default btn-sm">
-					<core:icon identifier="actions-add" />
-				</button>
-			    </typo3-backend-new-content-element-wizard-button>
-			    </div>
-		              <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-nextcol" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlNextCol}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
-				<button type="button" class="btn btn-default btn-sm">
-					<core:icon identifier="actions-add" />
-				</button>
-			    </typo3-backend-new-content-element-wizard-button>
-			    </div>
-		              <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-nextcol-nextrow" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlNextColNextRow}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
-				<button type="button" class="btn btn-default btn-sm">
-					<core:icon identifier="actions-add" />
-				</button>
-			    </typo3-backend-new-content-element-wizard-button>
-			    </div>
-		              <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-                        </f:then>
-		 </f:if>
-                </f:then>
-                <f:else>
-		<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-                    <a href="{item.newContentAfterUrl}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" class="btn btn-default btn-sm btn-newrow">
-                        <core:icon identifier="actions-add" />
-                        <f:translate key="LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:content" />
-                    </a>
-		</div>
-		<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-		 <f:if condition="{column.definition.dynamicGrid}">
-                        <f:then>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <a href="{item.newContentAfterUrlNewCol}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" class="btn btn-default btn-sm btn-newcol">
-				<core:icon identifier="actions-add" />
-			    </a>
-			    </div>
-			    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <a href="{item.newContentAfterUrlNewItem}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" class="btn btn-default btn-sm btn-newitem">
-				<core:icon identifier="actions-add" />
-			    </a>
-			    </div>
-			    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <a href="{item.newContentAfterUrlNextCol}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" class="btn btn-default btn-sm btn-nextcol">
-				<core:icon identifier="actions-add" />
-			    </a>
-			    </div>
-			    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-			    <div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
-			    <a href="{item.newContentAfterUrlNextColNextRow}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}" class="btn btn-default btn-sm btn-nextcol-nextrow">
-				<core:icon identifier="actions-add" />
-			    </a>
-			    </div>
-			    <div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
-                        </f:then>
-		 </f:if>
-                </f:else>
+		<f:if condition="{column.definition.dynamicGrid}">
+			<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-newcol" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
+				<typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlLeft}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
+					<button type="button" class="btn btn-default btn-sm">
+						<core:icon identifier="actions-add" />
+					</button>
+				</typo3-backend-new-content-element-wizard-button>
+			</div>
+			<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+			<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-newitem" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
+				<typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlNewItem}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
+					<button type="button" class="btn btn-default btn-sm">
+						<core:icon identifier="actions-add" />
+					</button>
+				</typo3-backend-new-content-element-wizard-button>
+			</div>
+			<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+			<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-nextcol" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
+				<typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlNextCol}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
+					<button type="button" class="btn btn-default btn-sm">
+						<core:icon identifier="actions-add" />
+					</button>
+				</typo3-backend-new-content-element-wizard-button>
+			</div>
+			<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+			<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-nextcol-nextrow" id="colpos-{item.column.columnNumber}-page-{item.context.pageId}-{item.column.uniqueId}">
+				<typo3-backend-new-content-element-wizard-button url="{item.newContentAfterUrlNextColNextRow}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
+					<button type="button" class="btn btn-default btn-sm">
+						<core:icon identifier="actions-add" />
+					</button>
+				</typo3-backend-new-content-element-wizard-button>
+			</div>
+			<div class="t3-page-ce-dropzone-available t3js-page-ce-dropzone-available"></div>
+		</f:if>
             </f:if>
     </f:if>
 </div>
