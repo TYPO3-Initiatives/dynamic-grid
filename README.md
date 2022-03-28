@@ -52,6 +52,25 @@
 ]
 ```
 
+## Local development environment
+
+There are several possibilities:
+
+### You can checkout this extension into your existing TYPO3 v11 and handle it as you would with a local package.
+
+The recommended way is to use a [composer `path` repository](https://getcomposer.org/doc/05-repositories.md#path).
+
+### You can use this extension as your root `composer` package and use the included DDEV configuration:
+
+```
+ddev start
+ddev launch /typo3
+```
+
+This installs a TYPO3 v11 into `./typo3`. The backend admin user is `admin`, password `adminadmin`.
+
+
+
 ## License
 
 GNU General Public License version 2 or later
