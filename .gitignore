@@ -2,3 +2,7 @@
 /.build
 /node_modules
 /composer.lock
+
+# ddev installation
+/.typo3
+/vendor
