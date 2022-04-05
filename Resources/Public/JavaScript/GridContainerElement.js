@@ -48,7 +48,7 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
                             ${row.containers.map((container, containerIndex) => lit_1.html `
 	                        <div class="grid-row" id="grid-row-${containerIndex}">
                                 ${container.items.map((item, itemIndex) =>  lit_1.html `
-                                    <div class="grid-item" id="grid-item-${containerIndex}-${itemIndex}" style="z-index: calc(1000 - ( 10 * ${containerIndex}) - ${itemIndex})">
+                                    <div class="grid-item" id="grid-item-${containerIndex}-${itemIndex}" style="z-index: calc(299 - ( 10 * ${containerIndex}) - ${itemIndex})">
 		                    ${item.entities.map(function(entity, entityIndex) {
 				        entity.inner = document.querySelector('#element-tt_content-' + entity.identifier);
 			                return lit_1.html `
@@ -88,13 +88,13 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		        padding: 20px 0;
 		        margin: 0;
 		        display: grid;
-			align-content: baseline;
-			border-left:1px dashed #cdcdcd;
-			border-bottom:1px dashed #cdcdcd;
-			border-top:1px dashed #cdcdcd;
+            align-content: baseline;
+            border-left:1px dashed #cdcdcd;
+            border-bottom:1px dashed #cdcdcd;
+            border-top:1px dashed #cdcdcd;
 		    }
 		    .grid-item:last-child {
-                        border-right: 1px dashed #cdcdcd;
+		        border-right: 1px dashed #cdcdcd;
                     }
 		    .btn-newrow {
 		        margin: 10px 0;
@@ -103,28 +103,31 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		    .btn-newcol,
 		    .grid-row .grid-item:only-child .btn-newitem,
 		    .btn-nextcol,
-		    .btn-nextcol-nextrow {
+		    .btn-nextrow {
 		        display: none;
 		    }
 		    .grid-row .grid-item:only-child .btn-newrow,
-                    .grid-row .grid-item:last-child > div:last-child .btn-newrow,
-                    .grid-row .grid-item > div:last-child .btn-newcol,
-                    .grid-item:not(:last-child) > div:last-child .btn-nextcol,
-                    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol-nextrow {
+		    .grid-row .grid-item:last-child > div:last-child .btn-newrow,
+		    .grid-row .grid-item > div:last-child .btn-newcol,
+		    .grid-item > div:last-child .btn-nextcol,
+		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow {
 		        display: block;
-			position: absolute;
+            position: absolute;
+		    }
+		    .grid-item:last-child > div:last-child .btn-nextcol {
+		        border:1px solid red;
 		    }
 		    .grid-item:not(:last-child) > div:last-child .btn-nextcol {
-		        //border: 1px solid red;
+		        border: 1px solid blue;
 		    }
-		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol-nextrow {
-		        //border: 1px solid green;
+		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow {
+		        border: 1px solid green;
 		    }
 		    .btn-newitem {
-			position: absolute;
-			bottom: -18px;
-			left: 50%;
-			margin-left:-24px;
+		        position: absolute;
+		        bottom: -18px;
+		        left: 50%;
+		        margin-left:-24px;
 		    }
 		</style>
             `;
@@ -155,13 +158,25 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 			   });
 			});
 			
+			
 			//the last content of a all row can add a new content after itself in an existing row after in a new col
-			$('.grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol-nextrow' ).each(function(i,e)
+			$('.grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow' ).each(function(i,e)
 			{
 			  $(e).position({
 			    my: "center center",
 			    at: "left center",
 			    of: '#' + $(e).parent().parent().parent().next().attr('id'),
+			    collision: "flipfit none"
+			   });
+			});
+			
+			//the last content of a all row can add a new content after itself in an existing row after in a new col
+			$(' .grid-item:last-child > div:last-child .btn-nextcol' ).each(function(i,e)
+			{
+			  $(e).position({
+			    my: "center bottom",
+			    at: "center-8 top-5",
+			    of: '#' + $(e).parent().parent().parent().next().children('div:first-child').children('div:first-child').attr('id'),
 			    collision: "flipfit none"
 			   });
 			});
