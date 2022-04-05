@@ -85,6 +85,33 @@ class DataHandlerHook
                             }
                             break;
                         case 'newItemAbove':
+                            // Find row
+                            foreach ($columnConfig['containers'] as $containerKey => $container) {
+                                // Find column
+                                foreach ($container['items'] as $itemKey => $item) {
+                                    foreach ($item['entities'] as $entityKey => $entity) {
+                                        if ((int)$entity['identifier'] === $existingElementUid) {
+                                            // Check if the existing element is in the same row
+                                            if (isset($dynamicGridConfig[$colPosKey]['containers'][$containerKey]['items'][$itemKey + 1]['entities'])) {
+                                                // If yes, prepend new entity as new column in the next row
+                                                array_unshift(
+                                                    $dynamicGridConfig[$colPosKey]['containers'][$containerKey]['items'][$itemKey + 1]['entities'],
+                                                    ['name' => $table, 'identifier' => $newElementUid]
+                                                );
+                                            } else {
+                                                if (isset($dynamicGridConfig[$colPosKey]['containers'][$containerKey+1]['items'])) {
+                                                    // Otherwise, prepend new entity in the first column of next row
+                                                    array_unshift(
+                                                        $dynamicGridConfig[$colPosKey]['containers'][$containerKey+1]['items'][0]['entities'],
+                                                        ['name' => $table, 'identifier' => $newElementUid]
+                                                    );
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         case 'newColumnLeft':
                             // Find row
