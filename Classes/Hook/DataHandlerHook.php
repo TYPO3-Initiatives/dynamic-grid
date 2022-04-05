@@ -89,6 +89,30 @@ class DataHandlerHook
                         case 'newColumnLeft':
                             break;
                         case 'newColumnRight':
+                            // Find row
+                            foreach ($columnConfig['containers'] as $containerKey => $container) {
+                                // Find column
+                                foreach ($container['items'] as $itemKey => $item) {
+                                    foreach ($item['entities'] as $entityKey => $entity) {
+                                        if ((int)$entity['identifier'] === $existingElementUid) {
+                                            // Place new entity as new column
+                                            $dynamicGridConfig[$colPosKey]['containers'][$containerKey]['items'] = array_merge(
+                                                array_slice($container['items'], 0, $itemKey + 1, false),
+                                                [
+                                                    [
+                                                        'size' => 1,
+                                                        'entities' => [
+                                                            ['name' => $table, 'identifier' => $newElementUid]
+                                                        ]
+                                                    ]
+                                                ],
+                                                array_slice($container['items'], $itemKey + 1, count($container['items']), false)
+                                            );
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
                             break;
                         default:
                             break;
