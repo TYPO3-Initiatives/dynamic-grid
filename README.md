@@ -25,38 +25,88 @@
     + adding new device (to all?) existing definitions
     + (... basically all dynamic grid actions ...)
 
-## Data Example
+## Setting up the Dynamic Grid testing example
 
+1. Create 5 content elements (best with uids 1-5) on the target page
+2. Add the following PageTSconfig to your root page:
+```
+mod.web_layout.BackendLayouts {
+  dynamic {
+    title = Dynamic Grid
+    config {
+      backend_layout {
+        colCount = 1
+        rowCount = 1
+        rows {
+          1 {
+            columns {
+              1 {
+                name = dynamic grid
+                colPos = 0
+                dynamicGrid = 1
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+3. Add the following dynamic grid json in the page properties (tab Resources) of the target page
 ```json
 [
-  {
-    "device": "default",
-    "items": [
-      {
-        "id": "i1234",
-        "fractions": 2,
-        "entities": [
-          {"name":  "tt_content", "identifier": "123"},
-          {"name":  "tt_content", "identifier": "234"}
+    {
+        "colPos":"0",
+        "containers": [
+            {
+                "items": [
+                    {
+                        "size": 1,
+                        "entities": [
+                            {"name":  "tt_content", "identifier": "1"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "items": [
+                    {
+                        "size": 1,
+                        "entities": [
+                            {"name":  "tt_content", "identifier": "2"},
+                            {"name":  "tt_content", "identifier": "3"}
+                        ]
+                    },
+                    {
+                        "size": 1,
+                        "entities": [
+                            {"name":  "tt_content", "identifier": "4"}
+                        ]
+                    }
+                ]
+            },
+            {
+                "items": [
+                    {
+                        "size": 1,
+                        "entities": [
+                            {"name":  "tt_content", "identifier": "5"}
+                        ]
+                    }
+                ]
+            }
         ]
-      },
-      {
-        "id": "i5678",
-        "fractions": 1,
-        "entities": [
-          {"name":  "tt_content", "identifier": "345"}
-        ]
-      }
-    ]
-  }
+    }
 ]
 ```
+4. Select the Dynamic Grid backend layout for the target page
 
 ## Local development environment
 
 There are several possibilities:
 
-### You can checkout this extension into your existing TYPO3 v11 and handle it as you would with a local package.
+### You can check out this extension into your existing TYPO3 v11 and handle it as you would with a local package.
 
 The recommended way is to use a [composer `path` repository](https://getcomposer.org/doc/05-repositories.md#path).
 
