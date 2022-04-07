@@ -140,8 +140,7 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
             `;
         }
 	firstUpdated() {
-	    console.log('firstupdate');
-            update();
+            this.requestUpdate()
         }
 	
 	updated() {
