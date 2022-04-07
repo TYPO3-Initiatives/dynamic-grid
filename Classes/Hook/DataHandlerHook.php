@@ -29,7 +29,7 @@ class DataHandlerHook
      */
     public function processDatamap_afterDatabaseOperations($status, $table, $id, $fieldArray, $parentObject)
     {
-        if ('new' !== $status) {
+        if ('new' !== $status || 'tt_content' !== $table) {
             return;
         }
 
