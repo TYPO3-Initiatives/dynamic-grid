@@ -64,9 +64,9 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
       
 		<style>
 		    .t3-page-ce {
-		        margin: 10px;
-		        transform:scale(1) !important;
-		        z-index:299;
+			margin: 10px;
+			transform:scale(1) !important;
+			z-index:299;
 		    }
 		    .t3-page-ce-hidden{
 		        opacity: 1;
@@ -82,17 +82,17 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		        position:relative;
 		    }
 		    .grid-row:first-child {
-		        margin-top: 0;
-		    }
+                        margin-top: 0;
+                    }
 		    .grid-item {
 		        position: relative;
 		        padding: 20px 0;
 		        margin: 0;
 		        display: grid;
-		        align-content: baseline;
-		        border-left:1px dashed #cdcdcd;
-		        border-bottom:1px dashed #cdcdcd;
-		        border-top:1px dashed #cdcdcd;
+			align-content: baseline;
+			border-left:1px dashed #cdcdcd;
+			border-bottom:1px dashed #cdcdcd;
+			border-top:1px dashed #cdcdcd;
 		    }
 		    .grid-item:last-child {
 		        border-right: 1px dashed #cdcdcd;
@@ -100,15 +100,11 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		    .btn-newrow {
 		        margin: 10px 0;
 		    }
-		    .btn-nextcol,
-		    .btn-nextrow {
-		        position: absolute;
-		    }
 		    .grid-row .grid-item .btn-newrow,
 		    .grid-row .grid-item .btn-newcol,
 		    .grid-row .grid-item:only-child .btn-newitem,
-		    .grid-row .grid-item .btn-nextcol,
-		    .grid-row .grid-item .btn-nextrow {
+		    .btn-nextcol,
+		    .btn-nextrow {
 		        display: none;
 		    }
 		    .grid-row .grid-item:only-child .btn-newrow,
@@ -116,12 +112,14 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		    .grid-row .grid-item > div:last-child .btn-newcol,
 		    .grid-item:not(:last-child) > div:last-child .btn-nextcol,
 		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol,
-		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow {
+		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow,
+		    td > div.t3-page-ce > .btn-nextcol,
+		    td > div.t3-page-ce > .btn-nextrow {
 		        display: block;
 		        position: absolute;
 		    }
 		    td > div.t3-page-ce > .btn-nextcol {
-		        //border:1px solid red;
+		        border:1px solid red;
 		    }
 		    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol {
 		        //border:1px solid red;
@@ -140,6 +138,9 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 		    }
 		</style>
             `;
+        }
+	firstUpdated() {
+            this.requestUpdate()
         }
 	
 	updated() {
@@ -205,7 +206,7 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 			   });
 			});
 			
-			//add a content before the first existing row
+			//add a content before the first existing content in a new col
 			$('td > div.t3-page-ce > .btn-nextrow' ).each(function(i,e)
 			{
 			  $(e).position({
@@ -217,6 +218,21 @@ define(["require", "exports", "lit", "lit/decorators", "lit-html/directives/styl
 			   
 			   //hide button if there is no content in the colpos
 			   //todo
+			});
+			
+			//add a content before the first existing content in an existing col
+			$('td > div.t3-page-ce > .btn-nextcol' ).each(function(i,e)
+			{
+			  $(e).position({
+			    my: "center top",
+			    at: "center-8 top",
+			    of: '#' + $(e).parent().next().children().children('div:first-child').children('div:first-child').attr('id'),
+			    collision: "flipfit none"
+			   });
+			   //hide button if there is no multiple column in the first existing row
+			   if($('#grid-row-0').children('div:only-child').length){
+				   $(e).hide();
+			   }
 			});
 			
 			
