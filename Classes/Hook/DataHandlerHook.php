@@ -50,6 +50,9 @@ class DataHandlerHook
             [ 'uid' => $pageUid] // where
         )->fetchAssociative();
 
+        //TODO: Handle if page has no contents yet, but dynamic grid is enabled
+        // In this case, the dynamic grid config needs to be initialized
+
         if (!empty($page['tx_dynamicgrid_grid'])) {
             $dynamicGridConfig = json_decode($page['tx_dynamicgrid_grid'], true);
             $newEntity = ['name' => $table, 'identifier' => $newElementUid];;
@@ -65,7 +68,45 @@ class DataHandlerHook
 
                     switch ($gridPlacement) {
                         case 'newRow':
-                            // TODO: Handle this case
+                            // Prepend new entity as new row after the existing row
+                            // or simply append if only one row exists so far
+                            if (1 < \count($dynamicGridConfig[$colPosKey]['containers'])) {
+                                $dynamicGridConfig[$colPosKey]['containers'] = array_merge(
+                                    array_slice(
+                                        $dynamicGridConfig[$colPosKey]['containers'],
+                                        0,
+                                        $targetContainer + 1,
+                                        false
+                                    ),
+                                    [
+                                        [
+                                            'items' => [
+                                                [
+                                                    'size' => 1,
+                                                    'entities' => [$newEntity]
+                                                ]
+                                            ]
+                                        ]
+                                    ],
+                                    array_slice(
+                                        $dynamicGridConfig[$colPosKey]['containers'],
+                                        $targetContainer + 1,
+                                        count($dynamicGridConfig[$colPosKey]['containers']),
+                                        false
+                                    )
+                                );
+                            } else {
+                                $dynamicGridConfig[$colPosKey]['containers'][] = [
+                                    [
+                                        'items' => [
+                                            [
+                                                'size' => 1,
+                                                'entities' => [$newEntity]
+                                            ]
+                                        ]
+                                    ]
+                                ];
+                            }
                             break;
                         case 'newItemBelow':
                             // Place new entity at the correct position
