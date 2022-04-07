@@ -23,7 +23,7 @@
 <f:if condition="{allowEditContent} && {column.contentEditable} && {column.context.allowNewContent} && {column.active}">
 	<f:if condition="{column.definition.dynamicGrid}">
 	<f:then>
-	    <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}">
+	    <div class="t3-page-ce t3js-page-ce" data-page="{column.context.pageId}" id="{column.uniqueId}" style="{f:if(condition: column.definition.dynamicGrid, then: 'transform:scale(0);')}">
 		<div class="t3js-page-new-ce t3-page-ce-wrapper-new-ce btn-newrow" id="colpos-{column.columnNumber}-page-{context.pageId}-{column.uniqueId}">
 			<typo3-backend-new-content-element-wizard-button url="{column.newContentUrlAsNewRow}" title="{f:translate(key: 'LLL:EXT:backend/Resources/Private/Language/locallang_layout.xlf:newContentElement')}">
 				<button type="button" class="btn btn-default btn-sm">
