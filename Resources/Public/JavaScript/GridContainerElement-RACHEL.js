@@ -44,22 +44,23 @@ static properties = {
           return lit_1.html `
 
         ${this.rows.map((row) => lit_1.html `
-                ${row.colPos != this.colPos ? '' : lit_1.html `
-                          ${row.containers.map((container, containerIndex) => lit_1.html `
-                        <div class="grid-row" id="grid-row-${containerIndex}">
-                              ${container.items.map((item, itemIndex) =>  lit_1.html `
-                                  <div class="grid-item" id="grid-item-${containerIndex}-${itemIndex}" style="z-index: calc(290 - ( 10 * ${containerIndex}) - ${itemIndex})">
-                      ${item.entities.map(function(entity, entityIndex) {
-              entity.inner = document.querySelector('#element-tt_content-' + entity.identifier);
-                    return lit_1.html `
-                        ${entity.inner}
-          `})}
-                                  </div>
-                  `)}
-                  </div>
-                          `)}
-          `}
-        `)}
+            ${row.colPos != this.colPos ? '' : lit_1.html `
+                    ${row.containers.map((container, containerIndex) => lit_1.html `
+                          <div class="grid-row" id="grid-row-${containerIndex}">
+                                ${container.items.map((item, itemIndex) =>  lit_1.html `
+                                    <div class="grid-item" id="grid-item-${containerIndex}-${itemIndex}" style="z-index: calc(290 - ( 10 * ${containerIndex}) - ${itemIndex})">
+                                        ${item.entities.map(function(entity, entityIndex) {
+                                              entity.inner = document.querySelector('#element-tt_content-' + entity.identifier);
+                                              return lit_1.html `
+                                                  ${entity.inner}
+                                              `})
+                                          }
+                                    </div>
+                                  `)}
+                            </div>
+                        `)}
+                    `}
+              `)}
 
 
   <style>
