@@ -1,0 +1,77 @@
+fof-typo3-dynamic-grid-container .t3-page-ce {
+    margin: 10px;
+    transform:scale(1) !important;
+    z-index:299;
+}
+fof-typo3-dynamic-grid-container .t3-page-ce-hidden{
+    opacity: 1;
+}
+fof-typo3-dynamic-grid-container .t3-page-ce-hidden .t3-page-ce-dragitem{
+    opacity: 0.4;
+}
+fof-typo3-dynamic-grid-container .grid-row {
+    margin: 45px 25px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(0px,1fr));
+    position:relative;
+}
+fof-typo3-dynamic-grid-container .grid-row:first-child {
+    margin-top: 0;
+}
+fof-typo3-dynamic-grid-container .grid-item {
+    position: relative;
+    padding: 20px 0;
+    margin: 0;
+    display: grid;
+    align-content: baseline;
+    border-left:1px dashed #cdcdcd;
+    border-bottom:1px dashed #cdcdcd;
+    border-top:1px dashed #cdcdcd;
+  }
+fof-typo3-dynamic-grid-container .grid-item:last-child {
+    border-right: 1px dashed #cdcdcd;
+}
+fof-typo3-dynamic-grid-container .btn-newrow {
+    margin: 10px 0;
+}
+fof-typo3-dynamic-grid-container .grid-row .grid-item .btn-newrow,
+fof-typo3-dynamic-grid-container .grid-row .grid-item .btn-newcol,
+fof-typo3-dynamic-grid-container .grid-row .grid-item:only-child .btn-newitem,
+fof-typo3-dynamic-grid-container .btn-nextcol,
+fof-typo3-dynamic-grid-container .btn-new-col-left {
+    display: none;
+}
+fof-typo3-dynamic-grid-container .grid-row .grid-item:only-child .btn-newrow,
+fof-typo3-dynamic-grid-container .grid-row .grid-item:last-child > div:last-child .btn-newrow,
+fof-typo3-dynamic-grid-container .grid-row .grid-item > div:last-child .btn-newcol,
+fof-typo3-dynamic-grid-container .grid-item:not(:last-child) > div:last-child .btn-nextcol,
+fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol,
+fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-new-col-left,
+fof-typo3-dynamic-grid-container td > div.t3-page-ce > .btn-nextcol,
+fof-typo3-dynamic-grid-container td > div.t3-page-ce > .btn-new-col-left {
+    display: block;
+    position: absolute;
+}
+fof-typo3-dynamic-grid-container td > div.t3-page-ce > .btn-nextcol {
+    /* border:1px solid red; */
+}
+fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol {
+    /* border:1px solid red; */
+}
+fof-typo3-dynamic-grid-container .grid-item:not(:last-child) > div:last-child .btn-nextcol {
+    /* border: 1px solid blue; */
+}
+fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-new-col-left {
+    /* border: 1px solid green; */
+}
+fof-typo3-dynamic-grid-container .btn-newitem {
+    position: absolute;
+    bottom: -18px;
+    left: 50%;
+    margin-left:-24px;
+}
+fof-typo3-dynamic-grid-container .btn-new-col-left {
+    top: 50%;
+    left: -27px;
+}
