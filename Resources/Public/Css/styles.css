@@ -39,7 +39,7 @@ fof-typo3-dynamic-grid-container .grid-row .grid-item .btn-newrow,
 fof-typo3-dynamic-grid-container .grid-row .grid-item .btn-newcol,
 fof-typo3-dynamic-grid-container .grid-row .grid-item:only-child .btn-newitem,
 fof-typo3-dynamic-grid-container .btn-nextcol,
-fof-typo3-dynamic-grid-container .btn-new-col-left {
+fof-typo3-dynamic-grid-container .btn-nextrow {
     display: none;
 }
 fof-typo3-dynamic-grid-container .grid-row .grid-item:only-child .btn-newrow,
@@ -47,9 +47,9 @@ fof-typo3-dynamic-grid-container .grid-row .grid-item:last-child > div:last-chil
 fof-typo3-dynamic-grid-container .grid-row .grid-item > div:last-child .btn-newcol,
 fof-typo3-dynamic-grid-container .grid-item:not(:last-child) > div:last-child .btn-nextcol,
 fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol,
-fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-new-col-left,
+fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow,
 fof-typo3-dynamic-grid-container td > div.t3-page-ce > .btn-nextcol,
-fof-typo3-dynamic-grid-container td > div.t3-page-ce > .btn-new-col-left {
+fof-typo3-dynamic-grid-container td > div.t3-page-ce > .btn-nextrow {
     display: block;
     position: absolute;
 }
@@ -62,7 +62,7 @@ fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-ch
 fof-typo3-dynamic-grid-container .grid-item:not(:last-child) > div:last-child .btn-nextcol {
     /* border: 1px solid blue; */
 }
-fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-new-col-left {
+fof-typo3-dynamic-grid-container .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow {
     /* border: 1px solid green; */
 }
 fof-typo3-dynamic-grid-container .btn-newitem {
@@ -71,7 +71,7 @@ fof-typo3-dynamic-grid-container .btn-newitem {
     left: 50%;
     margin-left:-24px;
 }
-fof-typo3-dynamic-grid-container .btn-new-col-left {
+fof-typo3-dynamic-grid-container .btn-nextrow {
     top: 50%;
     left: -27px;
 }
