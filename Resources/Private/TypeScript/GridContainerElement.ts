@@ -17,12 +17,20 @@ import {styleMap} from 'lit-html/directives/style-map';
 import {DirectiveResult} from 'lit-html/directive';
 
 interface GridRow {
+  /* items: GridItem[]; */
+  containers: RowInnerContainer[];
+}
+
+interface RowInnerContainer {
   items: GridItem[];
+  id: string;
+  fraction: number;
 }
 
 interface GridItem {
   id: string;
   fraction: number;
+  size: number;
   entities: EntityPointer[];
 }
 
@@ -42,79 +50,117 @@ export class GridContainerElement extends LitElement {
   @property({type: Array, reflect: true}) rows: GridRow[] = [];
   @property({type: Number}) maxFractions: Number = 12;
 
+/*
+// static styles don`t work since we deactivated the shadow dom
+
   static styles = [
     css`
-      :host {
-        display: block;
-      }
-      .outer {
-        border: 0.5em solid transparent;
-      }
-      .outer:hover {
-        border: 0.5em solid grey;
-      }
-      .bottom {
-        text-align: center;
-      }
-      button.add {
-        background: orange;
-      }
-      button.add.left {
-        position: absolute;
-        top: 50%;
-        left: -1em;
-      }
-      button.add.right {
-        position: absolute;
-        top: 50%;
-        right: -1em;
-      }
-
-      .grid-row {
-        border: 1px dotted grey;
-        margin: 0 1em 1em 1em;
-        padding: 1em;
+    .t3-page-ce {
+        margin: 10px;
+        transform:scale(1) !important;
+        z-index:299;
+    }
+    .t3-page-ce-hidden{
+        opacity: 1;
+    }
+    .t3-page-ce-hidden .t3-page-ce-dragitem{
+        opacity: 0.4;
+    }
+    .grid-row {
+        margin: 45px 25px;
+        padding: 0;
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(0px,1fr));
         position:relative;
-      }
-
-      .grid-item {
+    }
+    .grid-row:first-child {
+        margin-top: 0;
+    }
+    .grid-item {
         position: relative;
-        border: 1px dotted grey;
-        padding: 0.5em;
-        margin: 0.5em;
+        padding: 20px 0;
+        margin: 0;
         display: grid;
+        align-content: baseline;
+        border-left:1px dashed #cdcdcd;
+        border-bottom:1px dashed #cdcdcd;
+        border-top:1px dashed #cdcdcd;
       }
+    .grid-item:last-child {
+        border-right: 1px dashed #cdcdcd;
+    }
+    .btn-newrow {
+        margin: 10px 0;
+    }
+    .grid-row .grid-item .btn-newrow,
+    .grid-row .grid-item .btn-newcol,
+    .grid-row .grid-item:only-child .btn-newitem,
+    .btn-nextcol,
+    .btn-nextrow {
+        display: none;
+    }
+    .grid-row .grid-item:only-child .btn-newrow,
+    .grid-row .grid-item:last-child > div:last-child .btn-newrow,
+    .grid-row .grid-item > div:last-child .btn-newcol,
+    .grid-item:not(:last-child) > div:last-child .btn-nextcol,
+    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol,
+    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow,
+    td > div.t3-page-ce > .btn-nextcol,
+    td > div.t3-page-ce > .btn-nextrow {
+        display: block;
+        position: absolute;
+    }
+    td > div.t3-page-ce > .btn-nextcol {
+        border:1px solid red;
+    }
+    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextcol {
+        //border:1px solid red;
+    }
+    .grid-item:not(:last-child) > div:last-child .btn-nextcol {
+        //border: 1px solid blue;
+    }
+    .grid-row:not(:last-of-type) .grid-item:last-child > div:last-child .btn-nextrow {
+        //border: 1px solid green;
+    }
+    .btn-newitem {
+        position: absolute;
+        bottom: -18px;
+        left: 50%;
+        margin-left:-24px;
+    }
     `
   ];
+ */
+
+  // disable shadow dom for now...
+  protected createRenderRoot(): HTMLElement | ShadowRoot {
+    return this;
+  }
 
   private index: number = 1;
 
   public render(): TemplateResult {
+    /*
+
+        <!-- AK: ...realy ugly solution, but for now it works while requiring the backend css here -->
+        <link rel="stylesheet" href="/typo3/sysext/backend/Resources/Public/Css/backend.css" media="all">
+    */
     return html`
-      ${this.rows.map((row: GridRow) => html`
-        <div class="grid-row" style="${this.styleRow(row)}">
-          ${row.items.map((item: GridItem, itemIndex: number) => html`
-            <div class="grid-item" style="${this.styleItem(item)}">
-              ${itemIndex !== 0 ? '' : html`
-                  <button class="left add" @click="${() => this.prependItem(row)}">+</button>
-              `}
-              <div>${item.id}</div>
-              <button class="right add" @click="${() => this.appendItemAfter(row, item)}">+</button>
-            </div>
-          `)}
-        </div>
-      `)}
-      <div class="bottom">
-        <button class="add" @click="${this.appendRow}">+</button>
-      </div>
-      <div class="outer">
-        <div class="body">
-          <slot></slot>
-        </div>
-      </div>
+        ${this.rows.map((row: GridRow) => html`
+            ${row.containers.map((container: RowInnerContainer, containerIndex: number) => html`
+                <div class="grid-row" id="grid-row-${containerIndex}">
+                    ${container.items.map((item: GridItem, itemIndex) => html`
+                        <div class="grid-item" id="grid-item-${containerIndex}-${itemIndex}" style="z-index: calc(290 - ( 10 * ${containerIndex}) - ${itemIndex})">
+                            ${item.entities.map((entity: EntityPointer, entityIndex) => html `
+                                ${this.insertContentElement(entity.identifier)}
+                            `)}
+                        </div>
+                    `)}
+                </div>
+            `)}
+        `)}
     `;
+
   }
 
   public appendRow(): void
@@ -124,26 +170,38 @@ export class GridContainerElement extends LitElement {
 
   public prependItem(row: GridRow): void
   {
-    row.items = [].concat([this.createGridItem()], row.items);
+    row.containers = [].concat([this.createGridItem()], row.containers);
     this.rows = [].concat(this.rows);
   }
 
-  public appendItemAfter(row: GridRow, after: GridItem): void
+  public appendItemAfter(row: GridRow, after: RowInnerContainer): void
   {
-    const afterIndex = row.items.indexOf(after);
-    row.items.splice(afterIndex + 1, 0, this.createGridItem());
+    const afterIndex = row.containers.indexOf(after);
+    row.containers.splice(afterIndex + 1, 0, this.createRowInnerContainer());
     this.rows = [].concat(this.rows);
   }
 
   private styleRow(row: GridRow): DirectiveResult {
-    return styleMap({'grid-template-areas': '"' + row.items.map((item: GridItem) => item.id).join(' ') + '"'});
+    return styleMap({'grid-template-areas': '"' + row.containers.map((container: RowInnerContainer) => container.id).join(' ') + '"'});
   }
 
   private styleItem(item: GridItem): DirectiveResult {
     return styleMap({'grid-area': '"' + item.id + '"'});
   }
 
+  private createRowInnerContainer(): RowInnerContainer {
+    return {items: [], id: 'x', fraction: 1};
+  }
+
   private createGridItem(): GridItem {
-    return {id: 'x' + this.index++, fraction: 1, entities: []};
+    return {id: 'x' + this.index++, fraction: 1, entities: [], size: 1};
+  }
+
+  // look for the rendered content element and move that to the right position
+  private insertContentElement(identifier: string): TemplateResult {
+    let contentElement = document.querySelector('#element-tt_content-' + identifier);
+    return html `
+        ${contentElement}
+    `;
   }
 }
