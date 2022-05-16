@@ -21,9 +21,10 @@ hooks:
       if [[ $(mysql -e "SHOW TABLES" | wc -l) -eq 0 ]]; then
         rm .typo3/public/typo3conf/LocalConfiguration.php &> /dev/null || true
         composer install-typo3
+        mysql < .ddev/template/dump.sql
       fi
   # workaround for ddev v1.19 https://stackoverflow.com/questions/71509163/php-warning-in-typo3databasebackend-line-158-after-updating-ddev-to-1-19
-  - exec: sed -i 's/pdo_mysql/mysqli/' .typo3/public/typo3conf/AdditionalConfiguration.php 
+  - exec: sed -i 's/pdo_mysql/mysqli/' .typo3/public/typo3conf/AdditionalConfiguration.php
   - composer: typo3 cache:warmup
   - composer: typo3cms database:updateschema
   pre-start:

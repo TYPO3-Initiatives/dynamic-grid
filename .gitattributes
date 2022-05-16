@@ -1,0 +1,6 @@
+/.ddev export-ignore
+/.gitignore export-ignore
+/.nvmrc export-ignore
+/package.json export-ignore
+/tsconfig.json export-ignore
+/yarn.lock export-ignore
